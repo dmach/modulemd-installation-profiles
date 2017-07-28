@@ -65,6 +65,7 @@ Features:
 Open questions:
 * Add 'arch' field to allow per-arch defaults?
 * Available steams - allow installing *any* explicitly specified module even if it's stream is not on the list?
+* List of modules / streams to be installed by default?
 
 
 TODO:
