@@ -68,7 +68,6 @@ class TestBasic(unittest.TestCase):
         d.default_stream = "9.6"
         d.default_profiles.set("9.6", ["server", "client"])
         server.add_module_defaults(d)
-        server.dump(open("s", "w"))
 
         cls.server_261_1 = copy.deepcopy(cls.server_26_5)
         cls.server_261_1.version = "26.1"

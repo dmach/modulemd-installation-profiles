@@ -50,7 +50,7 @@ data:
         '9.6': [client, server]
       default-stream: '9.6'
   name: fedora-server                           # N part of N-V-R
-  release: 26                                   # R part of N-V-R
+  release: 5                                    # R part of N-V-R
   version: '26'                                 # V part of N-V-R
 document: modulemd-profile                      # metadata/document indentifier
 version: 0                                      # metadata format version
@@ -172,7 +172,7 @@ class InstallationProfile(dict):
         data = {
             "name": self.name,
             "version": self.version,
-            "release": int(self.version),
+            "release": int(self.release),
             "description": self.description,
             "modules": {},
         }
