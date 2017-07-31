@@ -46,6 +46,7 @@ class TestBasic(unittest.TestCase):
 
         d = ModuleDefaults()
         d.module_name = "base-runtime"
+        d.default = True
         d.available_streams.extend(["f26", "f27", "rawhide"])
         d.default_stream = "f26"
         d.default_profiles.set("f26", ["buildroot", "container"])
@@ -55,16 +56,19 @@ class TestBasic(unittest.TestCase):
 
         d = ModuleDefaults()
         d.module_name = "httpd"
+        d.default = False
         d.available_streams.extend(["2.2", "2.4"])
         d.default_stream = "2.4"
         server.add_module_defaults(d)
 
         d = ModuleDefaults()
         d.module_name = "postgresql"
+        d.default = False
         d.available_streams.extend(["9.6"])
         d.default_stream = "9.6"
         d.default_profiles.set("9.6", ["server", "client"])
         server.add_module_defaults(d)
+        server.dump(open("s", "w"))
 
         cls.server_261_1 = copy.deepcopy(cls.server_26_5)
         cls.server_261_1.version = "26.1"
@@ -84,6 +88,7 @@ class TestBasic(unittest.TestCase):
 
         d = ModuleDefaults()
         d.module_name = "base-runtime"
+        d.default = True
         d.available_streams.extend(["f26", "f27", "rawhide"])
         d.default_stream = "f26"
         d.default_profiles.set("f26", ["container"])
@@ -91,6 +96,7 @@ class TestBasic(unittest.TestCase):
 
         d = ModuleDefaults()
         d.module_name = "postgresql"
+        d.default = False
         d.available_streams.extend(["9.6"])
         d.default_stream = "9.6"
         d.default_profiles.set("9.6", ["client"])
@@ -106,12 +112,14 @@ class TestBasic(unittest.TestCase):
 
         d = ModuleDefaults()
         d.module_name = "base-runtime"
+        d.default = True
         d.available_streams.extend(["f27", "rawhide"])
         d.default_stream = "f27"
         workstation.add_module_defaults(d)
 
         d = ModuleDefaults()
         d.module_name = "postgresql"
+        d.default = False
         d.available_streams.extend(["9.6", "10.0"])
         d.default_stream = "10.0"
         d.default_profiles.set("9.6", ["client"])

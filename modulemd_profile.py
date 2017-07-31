@@ -33,16 +33,19 @@ data:
   modules:
     base-runtime:                               # module name
       available-streams: [f26, f27, rawhide]    # available streams, DNF will hide other steams from list
+      default: true                             # checked in Anaconda package selection
       default-profiles:                         # override default profiles specified in modulemd; not listed here -> no change (e.g. rawhide)
         f26: [buildroot, container]
         f27: []
       default-stream: f26                       # default stream
     httpd:
       available-streams: ['2.2', '2.4']
+      default: false
       default-profiles: {}
       default-stream: '2.4'
     postgresql:
       available-streams: ['9.6']
+      default: false
       default-profiles:
         '9.6': [client, server]
       default-stream: '9.6'
@@ -120,8 +123,9 @@ class ModuleDefaults(object):
     def dumpd(self):
         assert self.default_stream and self.default_stream in self.available_streams
         data = {
-            "default-stream": self.default_stream,
             "available-streams": sorted(set(self.available_streams)),
+            "default": bool(self.default),
+            "default-stream": self.default_stream,
             "default-profiles": self.default_profiles.dumpd()
         }
         result = {self.module_name: data}
