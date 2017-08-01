@@ -131,6 +131,14 @@ class ModuleDefaults(object):
         result = {self.module_name: data}
         return result
 
+    def loadd(self, name, data):
+        self.module_name = name
+        self.default = bool(data["default"])
+        self.available_streams = sorted(set(data["available-streams"]))
+        self.default_stream = data["default-stream"]
+        self.default_profiles = DefaultProfiles()
+        self.default_profiles.loadd(data["default-profiles"])
+
 
 @total_ordering
 class InstallationProfile(dict):
@@ -186,3 +194,20 @@ class InstallationProfile(dict):
             "data": data,
         }
         return result
+
+    def load(self, *args, **kwargs):
+        data = yaml.load(*args, **kwargs)
+        assert isinstance(data, dict)
+        self.loadd(data)
+
+    def loadd(self, data):
+        doc = data["data"]
+        self.name = doc["name"]
+        self.version = doc["version"]
+        self.release = int(doc["release"])
+        self.description = doc["description"]
+        modules = doc["modules"]
+        for module_name, module_data in modules.items():
+            defaults = ModuleDefaults()
+            defaults.loadd(module_name, module_data)
+            self.add_module_defaults(defaults)
