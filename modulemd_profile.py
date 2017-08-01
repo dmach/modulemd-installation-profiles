@@ -29,6 +29,7 @@ See tests for usage.
 
 Example:
 data:
+  arch: x86_64                                  # architecture, referring to DNF's $basearch
   description: Fedora 26 Server                 # verbose description, to be used in Anaconda, PackageKit, etc.
   modules:
     base-runtime:                               # module name
@@ -69,6 +70,7 @@ Open questions:
 * Add 'arch' field to allow per-arch defaults?
 * Available steams - allow installing *any* explicitly specified module even if it's stream is not on the list?
 * List of modules / streams to be installed by default?
+* Multilib - include 32bit modules in profiles for 64bit arches? How?
 
 
 TODO:
@@ -146,6 +148,7 @@ class InstallationProfile(dict):
         self.name = None
         self.version = None
         self.release = None
+        self.arch = None
         self.description = None
 
     def __eq__(self, other):
@@ -167,6 +170,14 @@ class InstallationProfile(dict):
         return 0
 
     @property
+    def id(self):
+        return "{}-{}-{}.{}".format(self.name, self.version, self.release, self.arch)
+
+    @property
+    def file_name(self):
+        return "{}.modulemd.profile.yaml".format(self.id)
+
+    @property
     def split_version(self):
         return [int(i) for i in self.version.split(".")]
 
@@ -181,6 +192,7 @@ class InstallationProfile(dict):
             "name": self.name,
             "version": self.version,
             "release": int(self.release),
+            "arch": self.arch,
             "description": self.description,
             "modules": {},
         }
@@ -205,6 +217,7 @@ class InstallationProfile(dict):
         self.name = doc["name"]
         self.version = doc["version"]
         self.release = int(doc["release"])
+        self.arch = doc["arch"]
         self.description = doc["description"]
         modules = doc["modules"]
         for module_name, module_data in modules.items():

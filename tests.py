@@ -41,6 +41,7 @@ class TestBasic(unittest.TestCase):
         server.name = "fedora-server"
         server.version = "26"
         server.release = 5
+        server.arch = "x86_64"
         server.description = "Fedora 26 Server"
         cls.server_26_5 = server
 
@@ -82,6 +83,7 @@ class TestBasic(unittest.TestCase):
         workstation.name = "fedora-workstation"
         workstation.version = "26"
         workstation.release = 2
+        workstation.arch = "x86_64"
         workstation.description = "Fedora 26 Workstation"
         cls.workstation_26_2 = workstation
 
@@ -158,6 +160,10 @@ class TestBasic(unittest.TestCase):
         self.assertEqual(server.name, "fedora-server")
         self.assertEqual(server.version, "26")
         self.assertEqual(server.release, 5)
+        self.assertEqual(server.arch, "x86_64")
+
+        self.assertEqual(server.id, "fedora-server-26-5.x86_64")
+        self.assertEqual(server.file_name, "fedora-server-26-5.x86_64.modulemd.profile.yaml")
 
         base = server["base-runtime"]
         self.assertEqual(base.available_streams, ["f26", "f27", "rawhide"])
